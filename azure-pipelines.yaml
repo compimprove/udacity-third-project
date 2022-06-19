@@ -1,6 +1,6 @@
 name: Azure Pipelines
 variables:
-  azureServiceConnectionId: ''
+  azureServiceConnectionId: 'udacityThirdProjectServiceConnection'
 
   fakeAppName: 'fakeRestAPI'
   # Environment name
