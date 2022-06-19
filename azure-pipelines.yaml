@@ -6,7 +6,7 @@ variables:
 
   fakeAppName: 'udacity-second-project'
   # Environment name
-  environmentName: 'udacity-second-project'
+  environmentName: 'udacity-third-project'
   # Project root folder. Point to the folder containing manage.py file.
   projectRoot: $(System.DefaultWorkingDirectory)
   # Python version: 3.7
