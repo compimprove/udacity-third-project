@@ -4,9 +4,9 @@ variables:
 
   vmImageName: 'ubuntu-18.04'
 
-  fakeAppName: 'fakeRestApiUdacity'
+  fakeAppName: 'udacity-second-project'
   # Environment name
-  environmentName: 'udacity-third-project'
+  environmentName: 'udacity-second-project'
   # Project root folder. Point to the folder containing manage.py file.
   projectRoot: $(System.DefaultWorkingDirectory)
   # Python version: 3.7
