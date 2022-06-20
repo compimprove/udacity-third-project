@@ -1,23 +1,106 @@
 {
 	"info": {
-		"_postman_id": "968b3a18-cc72-48a2-9b6b-e8619b4aaca8",
+		"_postman_id": "b65976db-6fe0-44ee-bcfd-b701b7dbee58",
 		"name": "Starter APIs",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10945364"
 	},
 	"item": [
 		{
-			"name": "Create Employee",
+			"name": "Get All Activities",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
-						"id": "38b1717c-45ae-477f-8dae-8e889ba381d5",
 						"exec": [
 							"pm.test(\"Successful response\", function () {",
-							"    pm.expect(pm.response.text()).to.include(\"success\");",
+							"    pm.response.to.have.status(200);",
+							"    let element = pm.response.json()[0];",
+							"    pm.expect(element).to.be.an(\"object\");",
+							"    pm.expect(element.id).to.be.a(\"number\");",
+							"    pm.expect(element.completed).to.be.false;",
 							"});",
 							"var json = pm.response.json();",
-							"pm.environment.set(\"id\", json.data.id);"
+							"pm.environment.set(\"activity-id\", json[0].id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://fakerestapi.azurewebsites.net/api/v1/Activities",
+					"protocol": "http",
+					"host": [
+						"fakerestapi",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Activities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Activity",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful response\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    let element = pm.response.json();",
+							"    pm.expect(element).to.be.an(\"object\");",
+							"    pm.expect(element.id).to.be.a(\"number\");",
+							"    pm.expect(element.completed).to.be.false;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://fakerestapi.azurewebsites.net/api/v1/Activities/{{activity-id}}",
+					"protocol": "http",
+					"host": [
+						"fakerestapi",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Activities",
+						"{{activity-id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Activities",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful response\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    let object = pm.response.json();",
+							"    pm.expect(object.id).to.eql(3);",
+							"    pm.expect(object.title).to.eql(\"Running\");",
+							"    pm.expect(object.completed).to.eql(true);",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -28,7 +111,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"{{name}}\",\n    \"salary\": \"{{salary}}\",\n    \"age\": \"{{age}}\"\n}",
+					"raw": "{\n  \"id\": 3,\n  \"title\": \"Running\",\n  \"dueDate\": \"2022-06-20T08:21:10.810Z\",\n  \"completed\": true\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -36,59 +119,21 @@
 					}
 				},
 				"url": {
-					"raw": "http://dummy.restapiexample.com/api/v1/create",
+					"raw": "http://fakerestapi.azurewebsites.net/api/v1/Activities",
 					"protocol": "http",
 					"host": [
-						"dummy",
-						"restapiexample",
-						"com"
+						"fakerestapi",
+						"azurewebsites",
+						"net"
 					],
 					"path": [
 						"api",
 						"v1",
-						"create"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get All Employees",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "af3cb111-e3ac-4174-b8ca-7f4127a0285d",
-						"exec": [
-							"pm.test(\"Successful response\", function () {",
-							"    pm.expect(pm.response.text()).to.include(\"success\");",
-							"});",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://dummy.restapiexample.com/api/v1/employees",
-					"protocol": "http",
-					"host": [
-						"dummy",
-						"restapiexample",
-						"com"
-					],
-					"path": [
-						"api",
-						"v1",
-						"employees"
+						"Activities"
 					]
 				}
 			},
 			"response": []
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
