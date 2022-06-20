@@ -7,10 +7,10 @@ provider "azurerm" {
 }
 terraform {
   backend "azurerm" {
-    storage_account_name = ""
-    container_name       = ""
-    key                  = ""
-    access_key           = ""
+    storage_account_name = "dinhntterraform"
+    container_name       = "terraformcontainer"
+    key                  = "dinhntterraform.key" 
+    access_key           = "NpAeX9IQdapcItPQrRbnxM7n1lBkSZDJ1Fw/i8WKkHRKeJ/x5tnElpZB9TQmfiw7zeZ3kgFhYWlo+AStefHafA=="
   }
 }
 module "resource_group" {
