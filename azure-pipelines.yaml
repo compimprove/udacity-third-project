@@ -42,33 +42,50 @@ stages:
       inputs:
         script: 'newman run StarterAPIs.json'
         workingDirectory: 'automatedtesting/postman'
-    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
-      displayName: 'Upload Package'
-      artifact: drop-fakerestapi
+    # - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
+    #   displayName: 'Upload Package'
+    #   artifact: drop-fakerestapi
 - stage: Deployment
   jobs:
-  - deployment: FakeRestAPI
-    pool:
-      vmImage: $(vmImageName)
-    environment: $(environmentName)
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: AzureWebApp@1
-            displayName: 'Deploy Azure Web App'
-            inputs:
-              azureSubscription: $(azureServiceConnectionId)
-              appName: $(fakeAppName)
-              appType: webApp
-              package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
+  # - deployment: FakeRestAPI
+  #   pool:
+  #     vmImage: $(vmImageName)
+  #   environment: $(environmentName)
+  #   strategy:
+  #     runOnce:
+  #       deploy:
+  #         steps:
+  #         - task: AzureWebApp@1
+  #           displayName: 'Deploy Azure Web App'
+  #           inputs:
+  #             azureSubscription: $(azureServiceConnectionId)
+  #             appName: $(fakeAppName)
+  #             appType: webApp
+  #             package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
   - job: Testing
     steps: 
     - task: CmdLine@2
-      displayName: ssh
+      displayName: Testing ssh
       inputs:
-        script: 'ssh -o StrictHostKeyChecking=no adminuser@20.247.117.108 "mkdir work; ls"'
+        script: 'ssh -o StrictHostKeyChecking=no adminuser@20.239.50.40 "mkdir work; ls"'
         workingDirectory: $(System.DefaultWorkingDirectory)
+    - task: CmdLine@2
+      displayName: Install terraform
+      inputs:
+        script: 'wget -qO - terraform.gpg https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/terraform-archive-keyring.gpg
+        sudo apt-add-repository "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/terraform-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+        sudo apt update
+        sudo apt install terraform=1.1.9"'
+        workingDirectory: $(System.DefaultWorkingDirectory)
+    - task: CmdLine@2
+      displayName: Terraform init
+      inputs:
+        script: 'terraform --version'
+        workingDirectory: $(System.DefaultWorkingDirectory)
+    
+
+
+  
   # - deployment: VMDeploy
   #   displayName: NAME
   #   environment:

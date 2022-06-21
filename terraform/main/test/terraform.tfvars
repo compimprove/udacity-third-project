@@ -12,7 +12,7 @@ tenant_id = ""
 # Resource Group/Location
 location = "East Asia"
 resource_group = "dinhnt"
-application_type = "dinhnt-terraform"
+application_type = "dinhnt"
 
 # Network
 virtual_network_name = "main"
