@@ -24,6 +24,11 @@ stages:
         knownHostsEntry: '$(KNOWN_HOSTS_ENTRY)'
         sshPublicKey: '$(PUBLIC_RSA_KEY)'
         sshKeySecureFile: 'id_rsa'
+    - task: CmdLine@2
+      displayName: Testing ssh
+      inputs:
+        script: 'ssh -o StrictHostKeyChecking=no adminuser@20.239.50.40 "mkdir work; ls"'
+        workingDirectory: $(System.DefaultWorkingDirectory)
     - task: ArchiveFiles@2
       displayName: 'Archive FakeRestAPI'
       inputs:
@@ -64,11 +69,6 @@ stages:
   #             package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
   - job: Testing
     steps: 
-    - task: CmdLine@2
-      displayName: Testing ssh
-      inputs:
-        script: 'ssh -o StrictHostKeyChecking=no adminuser@20.239.50.40 "mkdir work; ls"'
-        workingDirectory: $(System.DefaultWorkingDirectory)
     - task: CmdLine@2
       displayName: Install terraform
       inputs:
