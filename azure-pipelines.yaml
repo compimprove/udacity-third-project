@@ -29,24 +29,24 @@ stages:
       workingDirectory: $(System.DefaultWorkingDirectory)
       displayName: Testing ssh
         
-    - task: ArchiveFiles@2
-      displayName: 'Archive FakeRestAPI'
-      inputs:
-        rootFolderOrFile: '$(projectRoot)/automatedtesting/jmeter/fakerestapi'
-        includeRootFolder: false
-        archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
-    - task: CmdLine@2
-      displayName: Install Newman
-      inputs:
-        script: 'sudo npm install -g newman'
-        workingDirectory: $(System.DefaultWorkingDirectory)
-    - task: CmdLine@2
-      displayName: Run Regression Tests
-      continueOnError: true
-      inputs:
-        script: 'newman run StarterAPIs.json'
-        workingDirectory: 'automatedtesting/postman'
+    # - task: ArchiveFiles@2
+    #   displayName: 'Archive FakeRestAPI'
+    #   inputs:
+    #     rootFolderOrFile: '$(projectRoot)/automatedtesting/jmeter/fakerestapi'
+    #     includeRootFolder: false
+    #     archiveType: 'zip'
+    #     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
+    # - task: CmdLine@2
+    #   displayName: Install Newman
+    #   inputs:
+    #     script: 'sudo npm install -g newman'
+    #     workingDirectory: $(System.DefaultWorkingDirectory)
+    # - task: CmdLine@2
+    #   displayName: Run Regression Tests
+    #   continueOnError: true
+    #   inputs:
+    #     script: 'newman run StarterAPIs.json'
+    #     workingDirectory: 'automatedtesting/postman'
     # - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
     #   displayName: 'Upload Package'
     #   artifact: drop-fakerestapi
@@ -70,11 +70,11 @@ stages:
   - job: Testing
     steps: 
     - script: |
-        wget -qO - terraform.gpg https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/terraform-archive-keyring.gpg
-        sudo apt-add-repository "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/terraform-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-        sudo apt update
-        sudo apt install terraform=1.1.9
-      workingDirectory: $(System.DefaultWorkingDirectory)
+        wget https://releases.hashicorp.com/terraform/1.1.9/terraform_1.1.9_linux_amd64.zip
+        sudo apt install unzip
+        unzip terraform_1.1.9_linux_amd64.zip 
+        sudo mv ./terraform /usr/bin/
+      workingDirectory: '$(projectRoot)/temp'
       displayName: "Install terraform"
 
     - script: 'terraform --version'
