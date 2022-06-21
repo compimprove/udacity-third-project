@@ -10,7 +10,7 @@ tenant_id = ""
 # tenant_id = "13809706-139f-4bfc-925d-c56097aa3019"
 
 # Resource Group/Location
-location = "eastus"
+location = "East Asia"
 resource_group = "dinhnt"
 application_type = "dinhnt-terraform"
 

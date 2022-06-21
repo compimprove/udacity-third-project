@@ -19,11 +19,11 @@ stages:
       vmImage: $(vmImageName)
     steps:
     # Needed for Terraform VM deployment
-    # - task: InstallSSHKey@0
-    #   inputs:
-    #     knownHostsEntry: 'KNOWN_HOSTS_STRING'
-    #     sshPublicKey: 'PUBLIC_KEY'
-    #     sshKeySecureFile: 'id_rsa'
+    - task: InstallSSHKey@0
+      inputs:
+        knownHostsEntry: '$(KNOWN_HOSTS_ENTRY)'
+        sshPublicKey: '$(PUBLIC_RSA_KEY)'
+        sshKeySecureFile: 'id_rsa'
     - task: ArchiveFiles@2
       displayName: 'Archive FakeRestAPI'
       inputs:
@@ -62,6 +62,13 @@ stages:
               appName: $(fakeAppName)
               appType: webApp
               package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
+  - job: Testing
+    steps: 
+    - task: CmdLine@2
+      displayName: ssh
+      inputs:
+        script: 'ssh -o StrictHostKeyChecking=no adminuser@20.247.117.108 "mkdir work; ls"'
+        workingDirectory: $(System.DefaultWorkingDirectory)
   # - deployment: VMDeploy
   #   displayName: NAME
   #   environment:
