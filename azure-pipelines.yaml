@@ -70,6 +70,10 @@ stages:
   - job: Testing
     steps: 
     - script: |
+        mkdir temp
+      workingDirectory: '$(projectRoot)'
+      displayName: "Make temp folder"
+    - script: |
         wget https://releases.hashicorp.com/terraform/1.1.9/terraform_1.1.9_linux_amd64.zip
         sudo apt install unzip
         unzip terraform_1.1.9_linux_amd64.zip 
