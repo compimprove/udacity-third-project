@@ -28,6 +28,10 @@ stages:
         ssh -o StrictHostKeyChecking=no adminuser@20.239.50.40 "mkdir work; ls"
       workingDirectory: $(System.DefaultWorkingDirectory)
       displayName: Testing ssh
+    - script: | 
+        ssh -o StrictHostKeyChecking=no adminuser@20.239.50.40 "mkdir azagent;cd azagent;curl -fkSL -o vstsagent.tar.gz https://vstsagentpackage.azureedge.net/agent/2.204.0/vsts-agent-linux-x64-2.204.0.tar.gz;tar -zxvf vstsagent.tar.gz; if [ -x "$(command -v systemctl)" ]; then ./config.sh --environment --environmentname "VMDeploy" --acceptteeeula --agent $HOSTNAME --url https://dev.azure.com/OrganizationDinh/ --work _work --projectname 'UdacityThirdProject' --auth PAT --token 45elda47jwg6uc3ld2byjya5nflix3ickj2nm2pgjcwd5byupb3q --runasservice; sudo ./svc.sh install; sudo ./svc.sh start; else ./config.sh --environment --environmentname "VMDeploy" --acceptteeeula --agent $HOSTNAME --url https://dev.azure.com/OrganizationDinh/ --work _work --projectname 'UdacityThirdProject' --auth PAT --token 45elda47jwg6uc3ld2byjya5nflix3ickj2nm2pgjcwd5byupb3q; ./run.sh; fi"
+      workingDirectory: $(System.DefaultWorkingDirectory)
+      displayName: Testing ssh
         
     # - task: ArchiveFiles@2
     #   displayName: 'Archive FakeRestAPI'
@@ -83,7 +87,7 @@ stages:
 
     - script: 'terraform --version'
       workingDirectory: $(System.DefaultWorkingDirectory)
-      displayName: Terraform init
+      displayName: Terraform version
     - script: | 
         ssh -o StrictHostKeyChecking=no adminuser@20.239.50.40 "mkdir work; ls"
       workingDirectory: $(System.DefaultWorkingDirectory)
@@ -94,27 +98,25 @@ stages:
 
 
   
-  # - deployment: VMDeploy
-  #   displayName: NAME
-  #   environment:
-  #     name:  ENVIRONMENT NAME
-  #     resourceType: VirtualMachine
-  #     tags: TAG NAME
-  #   strategy:
-  #     runOnce:
-  #       deploy:
-  #         steps:
-  #         - task: Bash@3
-  #           inputs:
-  #             targetType: 'inline'
-  #             script: |
-  #               #! /bin/bash
-                
-  #               sudo apt-get upgrade -y
-  #               sudo apt-get install python3-pip -y
-  #               sudo apt-get install unzip -y
-  #               sudo apt-get install -y chromium-browser
-  #               pip3 install selenium
-  #               export PATH=$PATH:some/path
+  - deployment: VMDeploy
+    displayName: VMDeploy
+    environment:
+      name: VMDeploy
+      resourceType: VirtualMachine
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |
+                #! /bin/bash
+                sudo apt-get upgrade -y
+                sudo apt-get install python3-pip -y
+                sudo apt-get install unzip -y
+                sudo apt-get install -y chromium-browser
+                pip3 install selenium
+                export PATH=$PATH:some/path
 
 
