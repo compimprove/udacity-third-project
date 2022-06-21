@@ -24,11 +24,11 @@ stages:
         knownHostsEntry: '$(KNOWN_HOSTS_ENTRY)'
         sshPublicKey: '$(PUBLIC_RSA_KEY)'
         sshKeySecureFile: 'id_rsa'
-    - task: CmdLine@2
+    - script: | 
+        ssh -o StrictHostKeyChecking=no adminuser@20.239.50.40 "mkdir work; ls"
+      workingDirectory: $(System.DefaultWorkingDirectory)
       displayName: Testing ssh
-      inputs:
-        script: 'ssh -o StrictHostKeyChecking=no adminuser@20.239.50.40 "mkdir work; ls"'
-        workingDirectory: $(System.DefaultWorkingDirectory)
+        
     - task: ArchiveFiles@2
       displayName: 'Archive FakeRestAPI'
       inputs:
@@ -69,19 +69,23 @@ stages:
   #             package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
   - job: Testing
     steps: 
-    - task: CmdLine@2
-      displayName: Install terraform
-      inputs:
-        script: 'wget -qO - terraform.gpg https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/terraform-archive-keyring.gpg
+    - script: |
+        wget -qO - terraform.gpg https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/terraform-archive-keyring.gpg
         sudo apt-add-repository "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/terraform-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
         sudo apt update
-        sudo apt install terraform=1.1.9"'
-        workingDirectory: $(System.DefaultWorkingDirectory)
-    - task: CmdLine@2
+        sudo apt install terraform=1.1.9
+      workingDirectory: $(System.DefaultWorkingDirectory)
+      displayName: "Install terraform"
+
+    - script: 'terraform --version'
+      workingDirectory: $(System.DefaultWorkingDirectory)
       displayName: Terraform init
-      inputs:
-        script: 'terraform --version'
-        workingDirectory: $(System.DefaultWorkingDirectory)
+    - script: | 
+        ssh -o StrictHostKeyChecking=no adminuser@20.239.50.40 "mkdir work; ls"
+      workingDirectory: $(System.DefaultWorkingDirectory)
+      displayName: Testing ssh
+      
+        
     
 
 
