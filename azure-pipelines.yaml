@@ -2,6 +2,8 @@ name: Azure Pipelines
 variables:
   azureServiceConnectionId: 'udacityThirdProjectServiceConnection'
 
+  project-github-link: ''
+
   vmImageName: 'ubuntu-18.04'
 
   fakeAppName: 'dinhnt-terraform-AppService'
@@ -115,7 +117,7 @@ stages:
       workingDirectory: $(System.DefaultWorkingDirectory)
       displayName: Testing ssh
     - script: | 
-        ssh -o StrictHostKeyChecking=no adminuser@$(vm_public_ip) "sudo apt-get upgrade -y; sudo apt-get install python3-pip -y; sudo apt install unzip xvfb libxi6 libgconf-2-4 -y; pip3 install selenium;"
+        ssh -o StrictHostKeyChecking=no adminuser@$(vm_public_ip) "sudo apt-get upgrade -y; sudo apt-get install python3-pip -y; sudo apt install unzip xvfb libxi6 libgconf-2-4 -y;"
       workingDirectory: $(System.DefaultWorkingDirectory)
       displayName: Vm install lib
     - script: | 
@@ -123,13 +125,19 @@ stages:
       workingDirectory: $(System.DefaultWorkingDirectory)
       displayName: Install selenium
     - script: | 
-        ssh -o StrictHostKeyChecking=no adminuser@$(vm_public_ip) 'sudo curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add; sudo bash -c "echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' >> /etc/apt/sources.list.d/google-chrome.list"; sudo apt -y update; sudo apt -y install google-chrome-stable;'
+        ssh -o StrictHostKeyChecking=no adminuser@$(vm_public_ip) 'sudo curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add; sudo bash -c "echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' >> /etc/apt/sources.list.d/google-chrome.list"; sudo apt -y update; sudo apt -y install google-chrome-stable;google-chrome --version'
       workingDirectory: $(System.DefaultWorkingDirectory)
       displayName: Install chrome
     - script: | 
-        ssh -o StrictHostKeyChecking=no adminuser@$(vm_public_ip) "wget https://chromedriver.storage.googleapis.com/103.0.5060.24/chromedriver_linux64.zip; unzip chromedriver_linux64.zip;sudo mv chromedriver /usr/bin/chromedriver; sudo chown root:root /usr/bin/chromedriver; sudo chmod +x /usr/bin/chromedriver"
+        ssh -o StrictHostKeyChecking=no adminuser@$(vm_public_ip) "wget https://chromedriver.storage.googleapis.com/103.0.5060.24/chromedriver_linux64.zip; unzip chromedriver_linux64.zip;sudo mv chromedriver /usr/bin/chromedriver; sudo chown root:root /usr/bin/chromedriver; sudo chmod +x /usr/bin/chromedriver;rm chromedriver_linux64.zip;chromedriver --version"
       workingDirectory: $(System.DefaultWorkingDirectory)
       displayName: Install chrome driver      
+    - script: | 
+        ssh -o StrictHostKeyChecking=no adminuser@$(vm_public_ip) "mkdir ~/selenium-testing"
+        scp login.py adminuser@$(vm_public_ip):~/selenium-testing/login.py
+        ssh -o StrictHostKeyChecking=no adminuser@$(vm_public_ip) "python3 ~/selenium-testing/login.py"
+      workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
+      displayName: Selenium Testing
   # - job: JMeter Testing  
   #   steps:
       # 
