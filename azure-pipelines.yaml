@@ -110,15 +110,29 @@ stages:
         knownHostsEntry: '$(KNOWN_HOSTS_ENTRY)'
         sshPublicKey: '$(PUBLIC_RSA_KEY)'
         sshKeySecureFile: 'id_rsa'
-    - bash: |
-        echo $(vm_public_ip)
     - script: | 
         ssh -o StrictHostKeyChecking=no adminuser@$(vm_public_ip) "ls -la"
       workingDirectory: $(System.DefaultWorkingDirectory)
       displayName: Testing ssh
+    - script: | 
+        ssh -o StrictHostKeyChecking=no adminuser@$(vm_public_ip) "sudo apt-get upgrade -y; sudo apt-get install python3-pip -y; sudo apt install unzip xvfb libxi6 libgconf-2-4 -y; pip3 install selenium;"
+      workingDirectory: $(System.DefaultWorkingDirectory)
+      displayName: Vm install lib
+    - script: | 
+        ssh -o StrictHostKeyChecking=no adminuser@$(vm_public_ip) "pip3 install selenium"
+      workingDirectory: $(System.DefaultWorkingDirectory)
+      displayName: Install selenium
+    - script: | 
+        ssh -o StrictHostKeyChecking=no adminuser@$(vm_public_ip) 'sudo curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add; sudo bash -c "echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' >> /etc/apt/sources.list.d/google-chrome.list"; sudo apt -y update; sudo apt -y install google-chrome-stable;'
+      workingDirectory: $(System.DefaultWorkingDirectory)
+      displayName: Install chrome
+    - script: | 
+        ssh -o StrictHostKeyChecking=no adminuser@$(vm_public_ip) "wget https://chromedriver.storage.googleapis.com/103.0.5060.24/chromedriver_linux64.zip; unzip chromedriver_linux64.zip;sudo mv chromedriver /usr/bin/chromedriver; sudo chown root:root /usr/bin/chromedriver; sudo chmod +x /usr/bin/chromedriver"
+      workingDirectory: $(System.DefaultWorkingDirectory)
+      displayName: Install chrome driver      
   # - job: JMeter Testing  
   #   steps:
-    
+      # 
 
 
   
@@ -138,9 +152,17 @@ stages:
   #               #! /bin/bash
   #               sudo apt-get upgrade -y
   #               sudo apt-get install python3-pip -y
-  #               sudo apt-get install unzip -y
-  #               sudo apt-get install -y chromium-browser
+  #               sudo apt install unzip xvfb libxi6 libgconf-2-4 -y
+  #               sudo apt install default-jdk -y
   #               pip3 install selenium
+  #               sudo curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add 
+  #               sudo bash -c "echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' >> /etc/apt/sources.list.d/google-chrome.list" 
+  # sudo apt -y update 
+  # sudo apt -y install google-chrome-stable  
+  # wget https://chromedriver.storage.googleapis.com/103.0.5060.24/chromedriver_linux64.zip
+  # unzip chromedriver_linux64.zip 
+  # sudo mv chromedriver /usr/bin/chromedriver 
+  # sudo chown root:root /usr/bin/chromedriver 
+  # sudo chmod +x /usr/bin/chromedriver 
   #               # export PATH=$PATH:some/path
-
 
