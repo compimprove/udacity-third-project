@@ -1,4 +1,6 @@
 # #!/usr/bin/env python
+from telnetlib import TM
+import time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.common.by import By
@@ -20,14 +22,13 @@ print('Starting the browser...')
 
 
 def login(email, password):
-    browser.get('http://automationpractice.com/')
     browser.find_element(by=By.CSS_SELECTOR,
                          value="a.login").click()
     print('Navigating to login.')
     try:
-        emailInput = WebDriverWait(browser, delay).until(
+        email_input = WebDriverWait(browser, delay).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, "#email")))
-        emailInput.send_keys(email)
+        email_input.send_keys(email)
         print('set email: ', email)
         browser.find_element(by=By.CSS_SELECTOR,
                              value="#passwd").send_keys(password)
@@ -40,7 +41,7 @@ def login(email, password):
         print("Loading took too much time!")
 
 
-def goToHome():
+def go_to_home():
     print('goToHome')
     try:
         home = WebDriverWait(browser, delay).until(
@@ -50,13 +51,32 @@ def goToHome():
         print("Loading took too much time!")
 
 
-def addProductToCart():
+def add_product_to_cart():
     print('addProductToCart')
-    browser.find_element(by=By.CSS_SELECTOR,
-                         value="#header_logo>a").click()
+    WebDriverWait(browser, delay).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, "#homefeatured li .button-container a.ajax_add_to_cart_button")))
+    buttons = browser.find_elements(
+        by=By.CSS_SELECTOR, value="#homefeatured li .button-container a.ajax_add_to_cart_button")
+    for idx, button in enumerate(buttons):
+        button.click()
+        WebDriverWait(browser, delay).until(
+            EC.visibility_of_element_located((By.CSS_SELECTOR, "#layer_cart")))
+        WebDriverWait(browser, delay).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "span.continue.btn.btn-default.button.exclusive-medium"))).click()
+        time.sleep(1)
+        product_added = idx + 1
+        print(f'add {product_added} to cart')
+    quantity = browser.find_element(
+        by=By.CSS_SELECTOR, value=".shopping_cart .ajax_cart_quantity")
+    print(f'product add to cart:{quantity.text}')
 
 
-def removeProductFromCart():
+# def wait_for_product_popup_appear():
+#     while (browser.find_element(by=By.ID, value="layer_cart").value_of_css_property('display') == 'none'):
+#         time.sleep(0.5)
+
+
+def remove_product_from_cart():
     print('removeProductFromCart')
     browser.find_element(by=By.CSS_SELECTOR,
                          value="#header_logo>a").click()
@@ -64,7 +84,8 @@ def removeProductFromCart():
 # "#homefeatured li .button-container a.ajax_add_to_cart_button"
 
 
-login('compimprove@gmail.com', '0987654321')
-goToHome()
-addProductToCart()
-removeProductFromCart()
+browser.get('http://automationpractice.com/')
+# login('compimprove@gmail.com', '0987654321')
+# go_to_home()
+add_product_to_cart()
+remove_product_from_cart()
