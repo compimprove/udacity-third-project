@@ -13,10 +13,10 @@ variables:
   python.version: '3.7.6'
 stages:
 - stage: Build
+  pool:
+    vmImage: $(vmImageName)
   jobs:
   - job: Build
-    pool:
-      vmImage: $(vmImageName)
     steps:
     # Needed for Terraform VM deployment
     - task: InstallSSHKey@0
@@ -51,8 +51,9 @@ stages:
     #   displayName: 'Upload Package'
     #   artifact: drop-fakerestapi
 - stage: Deployment
+  pool:
+    vmImage: $(vmImageName)
   jobs:
-
   - job: BuildTerraform
     steps: 
     - script: |
