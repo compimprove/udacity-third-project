@@ -1,5 +1,4 @@
 # #!/usr/bin/env python
-from telnetlib import TM
 import time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
@@ -15,7 +14,7 @@ options.add_argument("--headless")
 # userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36"
 # options.add_argument('user-agent={userAgent}')
 
-delay = 10
+delay = 15
 browser = webdriver.Chrome(options=options)
 print('Starting the browser...')
 # Start the browser and login with standard_user
@@ -59,13 +58,19 @@ def add_product_to_cart():
         by=By.CSS_SELECTOR, value="#homefeatured li .button-container a.ajax_add_to_cart_button")
     for idx, button in enumerate(buttons):
         button.click()
-        WebDriverWait(browser, delay).until(
-            EC.visibility_of_element_located((By.CSS_SELECTOR, "#layer_cart")))
-        WebDriverWait(browser, delay).until(
-            EC.element_to_be_clickable((By.CSS_SELECTOR, "span.continue.btn.btn-default.button.exclusive-medium"))).click()
-        time.sleep(1)
-        product_added = idx + 1
-        print(f'add {product_added} to cart')
+        time.sleep(0.3)
+        try:
+            WebDriverWait(browser, delay).until(
+                EC.visibility_of_element_located((By.CSS_SELECTOR, "#layer_cart")))
+            WebDriverWait(browser, delay).until(
+                EC.element_to_be_clickable((By.CSS_SELECTOR, "span.continue.btn.btn-default.button.exclusive-medium"))).click()
+        except TimeoutException:
+            WebDriverWait(browser, delay).until(
+                EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".fancybox-outer h1"), "Resource Limit Is Reached"))
+            print("Demo server is out of memory")
+            
+        time.sleep(0.3)
+        print(f'add {idx + 1} to cart')
     quantity = browser.find_element(
         by=By.CSS_SELECTOR, value=".shopping_cart .ajax_cart_quantity")
     print(f'product add to cart:{quantity.text}')
@@ -77,15 +82,30 @@ def add_product_to_cart():
 
 
 def remove_product_from_cart():
-    print('removeProductFromCart')
     browser.find_element(by=By.CSS_SELECTOR,
-                         value="#header_logo>a").click()
+                         value=".shopping_cart > a").click()
+    WebDriverWait(browser, delay).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, ".cart_delete > div > a")))
+    WebDriverWait(browser, delay).until(
+        EC.element_to_be_clickable((By.CSS_SELECTOR, ".cart_delete > div > a")))
+    remove_product_buttons = browser.find_elements(
+        by=By.CSS_SELECTOR, value=".cart_delete > div > a")
+    for idx, button in enumerate(remove_product_buttons):
+        button.click()
+        print(f"remove {idx + 1} product from cart")
+
+    WebDriverWait(browser, delay * 3).until(
+        EC.invisibility_of_element_located((By.CSS_SELECTOR, "#order-detail-content")))
+    WebDriverWait(browser, delay).until(
+        EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#center_column .alert.alert-warning"), "Your shopping cart is empty."))
+    print(f"Remove all product from cart successfully")
+
 # .clearfix .button-container a.button
 # "#homefeatured li .button-container a.ajax_add_to_cart_button"
 
 
 browser.get('http://automationpractice.com/')
-# login('compimprove@gmail.com', '0987654321')
-# go_to_home()
+login('compimprove@gmail.com', '0987654321')
+go_to_home()
 add_product_to_cart()
 remove_product_from_cart()

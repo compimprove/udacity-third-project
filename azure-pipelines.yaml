@@ -2,8 +2,6 @@ name: Azure Pipelines
 variables:
   azureServiceConnectionId: 'udacityThirdProjectServiceConnection'
 
-  project-github-link: ''
-
   vmImageName: 'ubuntu-18.04'
 
   fakeAppName: 'dinhnt-AppService'
@@ -61,7 +59,7 @@ stages:
     # Build terraform
     - bash:
         # export VM_PUBLIC_IP=$(terraform output -raw vm_public_ip_address)
-        export VM_PUBLIC_IP=20.239.50.40
+        export VM_PUBLIC_IP="20.239.50.40"
       workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/main/test'
       displayName: Export Vm public ip
     - bash: |
@@ -69,7 +67,6 @@ stages:
       workingDirectory: $(System.DefaultWorkingDirectory)
       displayName: Export Vm public ip
       name: VmPublicIp
-
 
   # - deployment: FakeRestAPI
   #   pool:
@@ -86,6 +83,7 @@ stages:
   #             appName: $(fakeAppName)
   #             appType: webApp
   #             package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
+  
   - job: SeleniumTesting
     dependsOn: BuildTerraform
     variables:
