@@ -52,7 +52,7 @@ stages:
     #   artifact: drop-fakerestapi
 - stage: Deployment
   variables:
-    vm_public_ip: ""
+    vm_public_ip: "vm_public_ip"
   pool:
     vmImage: $(vmImageName)
   jobs:
@@ -77,6 +77,8 @@ stages:
     # - script: 'export VM_PUBLIC_IP=$(terraform output -raw vm_public_ip_address)'
     #   workingDirectory: $(System.DefaultWorkingDirectory)
     #   displayName: Export Vm public ip
+    - bash: |
+        echo $(vm_public_ip)
     - bash: |
         echo "##vso[task.setvariable variable=vm_public_ip;]20.239.50.40"
       workingDirectory: $(System.DefaultWorkingDirectory)
