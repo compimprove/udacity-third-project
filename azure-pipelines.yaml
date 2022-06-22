@@ -67,7 +67,7 @@ stages:
   #             appName: $(fakeAppName)
   #             appType: webApp
   #             package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
-  - job: Build Terraform
+  - job: BuildTerraform
     steps: 
     - script: |
         mkdir temp
@@ -84,7 +84,7 @@ stages:
     - script: 'terraform --version'
       workingDirectory: $(System.DefaultWorkingDirectory)
       displayName: Terraform version
-  - job: Selenium Testing
+  - job: SeleniumTesting
     pool:
       vmImage: $(vmImageName)
     steps:
