@@ -52,21 +52,7 @@ stages:
     #   artifact: drop-fakerestapi
 - stage: Deployment
   jobs:
-  # - deployment: FakeRestAPI
-  #   pool:
-  #     vmImage: $(vmImageName)
-  #   environment: $(environmentName)
-  #   strategy:
-  #     runOnce:
-  #       deploy:
-  #         steps:
-  #         - task: AzureWebApp@1
-  #           displayName: 'Deploy Azure Web App'
-  #           inputs:
-  #             azureSubscription: $(azureServiceConnectionId)
-  #             appName: $(fakeAppName)
-  #             appType: webApp
-  #             package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
+
   - job: BuildTerraform
     steps: 
     - script: |
@@ -84,7 +70,25 @@ stages:
     - script: 'terraform --version'
       workingDirectory: $(System.DefaultWorkingDirectory)
       displayName: Terraform version
+
+  # - deployment: FakeRestAPI
+  #   pool:
+  #     vmImage: $(vmImageName)
+  #   environment: $(environmentName)
+  #   strategy:
+  #     runOnce:
+  #       deploy:
+  #         steps:
+  #         - task: AzureWebApp@1
+  #           displayName: 'Deploy Azure Web App'
+  #           inputs:
+  #             azureSubscription: $(azureServiceConnectionId)
+  #             appName: $(fakeAppName)
+  #             appType: webApp
+  #             package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
   - job: SeleniumTesting
+    dependsOn: BuildTerraform
+    condition: succeeded()
     pool:
       vmImage: $(vmImageName)
     steps:
