@@ -71,6 +71,14 @@ stages:
     - script: 'terraform --version'
       workingDirectory: $(System.DefaultWorkingDirectory)
       displayName: Terraform version
+    # Build terraform
+    # - script: 'export VM_PUBLIC_IP=$(terraform output -raw vm_public_ip_address)'
+    #   workingDirectory: $(System.DefaultWorkingDirectory)
+    #   displayName: Export Vm public ip
+    - script: 'export VM_PUBLIC_IP=20.239.50.40'
+      workingDirectory: $(System.DefaultWorkingDirectory)
+      displayName: Export Vm public ip
+
 
   # - deployment: FakeRestAPI
   #   pool:
@@ -99,7 +107,7 @@ stages:
         sshPublicKey: '$(PUBLIC_RSA_KEY)'
         sshKeySecureFile: 'id_rsa'
     - script: | 
-        ssh -o StrictHostKeyChecking=no adminuser@20.239.50.40 "ls -la"
+        ssh -o StrictHostKeyChecking=no adminuser@$VM_PUBLIC_IP "ls -la"
       workingDirectory: $(System.DefaultWorkingDirectory)
       displayName: Testing ssh
   # - job: JMeter Testing  
