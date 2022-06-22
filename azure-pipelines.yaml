@@ -51,6 +51,8 @@ stages:
     #   displayName: 'Upload Package'
     #   artifact: drop-fakerestapi
 - stage: Deployment
+  variables:
+  - vm_public_ip: ""
   pool:
     vmImage: $(vmImageName)
   jobs:
