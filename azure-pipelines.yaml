@@ -6,7 +6,7 @@ variables:
 
   vmImageName: 'ubuntu-18.04'
 
-  fakeAppName: 'dinhnt-terraform-AppService'
+  fakeAppName: 'dinhnt-AppService'
   # Environment name
   environmentName: 'udacity-third-project'
   # Project root folder. Point to the folder containing manage.py file.
@@ -21,37 +21,22 @@ stages:
   - job: Build
     steps:
     # Needed for Terraform VM deployment
-    - task: InstallSSHKey@0
-      inputs:
-        knownHostsEntry: '$(KNOWN_HOSTS_ENTRY)'
-        sshPublicKey: '$(PUBLIC_RSA_KEY)'
-        sshKeySecureFile: 'id_rsa'
     - script: | 
-        ssh -o StrictHostKeyChecking=no adminuser@20.239.50.40 "ls -la"
-      workingDirectory: $(System.DefaultWorkingDirectory)
-      displayName: Testing ssh
+        sudo npm install -g newman
+        newman run StarterAPIs.json
+      workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
+      displayName: Install Newman
 
-    # - task: ArchiveFiles@2
-    #   displayName: 'Archive FakeRestAPI'
-    #   inputs:
-    #     rootFolderOrFile: '$(projectRoot)/automatedtesting/jmeter/fakerestapi'
-    #     includeRootFolder: false
-    #     archiveType: 'zip'
-    #     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
-    # - task: CmdLine@2
-    #   displayName: Install Newman
-    #   inputs:
-    #     script: 'sudo npm install -g newman'
-    #     workingDirectory: $(System.DefaultWorkingDirectory)
-    # - task: CmdLine@2
-    #   displayName: Run Regression Tests
-    #   continueOnError: true
-    #   inputs:
-    #     script: 'newman run StarterAPIs.json'
-    #     workingDirectory: 'automatedtesting/postman'
-    # - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
-    #   displayName: 'Upload Package'
-    #   artifact: drop-fakerestapi
+    - task: ArchiveFiles@2
+      displayName: 'Archive FakeRestAPI'
+      inputs:
+        rootFolderOrFile: '$(projectRoot)/automatedtesting/jmeter/fakerestapi'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
+    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
+      displayName: 'Upload Package'
+      artifact: drop-fakerestapi
 - stage: Deployment
   pool:
     vmImage: $(vmImageName)
@@ -75,7 +60,8 @@ stages:
       displayName: Terraform version
     # Build terraform
     - bash:
-        export VM_PUBLIC_IP=$(terraform output -raw vm_public_ip_address)
+        # export VM_PUBLIC_IP=$(terraform output -raw vm_public_ip_address)
+        export VM_PUBLIC_IP=20.239.50.40
       workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/main/test'
       displayName: Export Vm public ip
     - bash: |
