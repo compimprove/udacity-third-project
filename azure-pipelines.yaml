@@ -93,7 +93,11 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
-    # Needed for Terraform VM deployment
+    - task: InstallSSHKey@0
+      inputs:
+        knownHostsEntry: '$(KNOWN_HOSTS_ENTRY)'
+        sshPublicKey: '$(PUBLIC_RSA_KEY)'
+        sshKeySecureFile: 'id_rsa'
     - script: | 
         ssh -o StrictHostKeyChecking=no adminuser@20.239.50.40 "ls -la"
       workingDirectory: $(System.DefaultWorkingDirectory)
