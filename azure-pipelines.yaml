@@ -63,7 +63,7 @@ stages:
       workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/main/test'
       displayName: Export Vm public ip
     - bash: |
-        echo "##vso[task.setvariable variable=vm_public_ip;isOutput=true]$VM_PUBLIC_IP"
+        echo "##vso[task.setvariable variable=vm_public_ip;isOutput=true]20.239.50.40"
       workingDirectory: $(System.DefaultWorkingDirectory)
       displayName: Export Vm public ip
       name: VmPublicIp
