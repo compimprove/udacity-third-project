@@ -25,7 +25,7 @@ stages:
       displayName: Install Newman
 
     - script: | 
-        newman run StarterAPIs.json
+        newman run -r junit StarterAPIs.json
       workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
       displayName: Run Test Newman
 
