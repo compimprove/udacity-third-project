@@ -1,6 +1,6 @@
 name: Azure Pipelines
 variables:
-  azureServiceConnectionId: 'udacityThirdProjectServiceConnection'
+  azureServiceConnectionId: 'udacityLabServiceConnection'
 
   vmImageName: 'ubuntu-18.04'
 
@@ -141,10 +141,10 @@ stages:
         ssh -o StrictHostKeyChecking=no adminuser@$(vm_public_ip) "python3 ~/selenium-testing/login.py"
       workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
       displayName: Selenium Testing
-    - script: |
-        terraform apply -destroy -auto-approve
-      workingDirectory: '$(projectRoot)/terraform/main/test'
-      displayName: Destroy Terraform
+    # - script: |
+    #     terraform apply -destroy -auto-approve
+    #   workingDirectory: '$(projectRoot)/terraform/main/test'
+    #   displayName: Destroy Terraform
 
   # - job: JMeter Testing  
   #   steps:
