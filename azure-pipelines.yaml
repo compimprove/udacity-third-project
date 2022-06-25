@@ -120,7 +120,7 @@ stages:
       workingDirectory: $(System.DefaultWorkingDirectory)
       displayName: Testing ssh
     - script: | 
-        ssh -o StrictHostKeyChecking=no adminuser@$(vm_public_ip) "sudo apt-get upgrade -y; sudo apt-get install python3-pip -y; sudo apt install unzip xvfb libxi6 libgconf-2-4 -y;"
+        ssh -o StrictHostKeyChecking=no adminuser@$(vm_public_ip) "sudo apt-get update; sudo apt-get upgrade -y; sudo apt install python3-pip unzip xvfb libxi6 libgconf-2-4 -y;"
       workingDirectory: $(System.DefaultWorkingDirectory)
       displayName: Vm install lib
     - script: | 
@@ -141,6 +141,11 @@ stages:
         ssh -o StrictHostKeyChecking=no adminuser@$(vm_public_ip) "python3 ~/selenium-testing/login.py"
       workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
       displayName: Selenium Testing
+    - script: |
+        terraform apply -destroy -auto-approve
+      workingDirectory: '$(projectRoot)/terraform/main/test'
+      displayName: Destroy Terraform
+
   # - job: JMeter Testing  
   #   steps:
       # 
