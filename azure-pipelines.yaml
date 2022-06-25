@@ -53,15 +53,6 @@ stages:
   jobs:
   - job: BuildTerraform
     steps: 
-    - task: InstallSSHKey@0
-      inputs:
-        knownHostsEntry: '$(KNOWN_HOSTS_ENTRY)'
-        sshPublicKey: '$(PUBLIC_RSA_KEY)'
-        sshKeySecureFile: 'id_rsa'
-    - script: |
-        ls ~/.ssh
-      workingDirectory: '$(projectRoot)'
-      displayName: "Check ssh key"
     - script: |
         mkdir temp
       workingDirectory: '$(projectRoot)'
