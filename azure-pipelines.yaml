@@ -143,8 +143,8 @@ stages:
   #     displayName: Selenium Testing
 
   - job: JMeterTesting  
-    dependsOn: DeployFakeRestAPI
-    condition: succeeded()
+    # dependsOn: DeployFakeRestAPI
+    # condition: succeeded()
     steps:
     - script: |
         curl -X GET --header 'Accept: application/json' 'http://dinhnt-appservice.azurewebsites.net/api/Activities'
