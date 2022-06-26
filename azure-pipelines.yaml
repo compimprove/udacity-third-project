@@ -149,36 +149,3 @@ stages:
   # - job: JMeter Testing  
   #   steps:
       # 
-
-
-  
-  # - deployment: VMDeploy
-  #   displayName: VMDeploy
-  #   environment:
-  #     name: VMDeploy
-  #     resourceType: VirtualMachine
-  #   strategy:
-  #     runOnce:
-  #       deploy:
-  #         steps:
-  #         - task: Bash@3
-  #           inputs:
-  #             targetType: 'inline'
-  #             script: |
-  #               #! /bin/bash
-  #               sudo apt-get upgrade -y
-  #               sudo apt-get install python3-pip -y
-  #               sudo apt install unzip xvfb libxi6 libgconf-2-4 -y
-  #               sudo apt install default-jdk -y
-  #               pip3 install selenium
-  #               sudo curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add 
-  #               sudo bash -c "echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' >> /etc/apt/sources.list.d/google-chrome.list" 
-  # sudo apt -y update 
-  # sudo apt -y install google-chrome-stable  
-  # wget https://chromedriver.storage.googleapis.com/103.0.5060.24/chromedriver_linux64.zip
-  # unzip chromedriver_linux64.zip 
-  # sudo mv chromedriver /usr/bin/chromedriver 
-  # sudo chown root:root /usr/bin/chromedriver 
-  # sudo chmod +x /usr/bin/chromedriver 
-  #               # export PATH=$PATH:some/path
-

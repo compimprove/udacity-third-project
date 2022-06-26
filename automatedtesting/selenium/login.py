@@ -54,9 +54,12 @@ def add_product_to_cart():
     print('addProductToCart')
     WebDriverWait(browser, delay).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, "#homefeatured li .button-container a.ajax_add_to_cart_button")))
-    buttons = browser.find_elements(
-        by=By.CSS_SELECTOR, value="#homefeatured li .button-container a.ajax_add_to_cart_button")
-    for idx, button in enumerate(buttons):
+    list_products = browser.find_elements(
+        by=By.CSS_SELECTOR, value="#homefeatured li")
+    for idx, product in enumerate(list_products):
+        product_name = product.find_element(By.CSS_SELECTOR, ".product-name").text
+        button = product.find_element(
+            By.CSS_SELECTOR, ".button-container a.ajax_add_to_cart_button")
         button.click()
         time.sleep(0.3)
         try:
@@ -68,12 +71,12 @@ def add_product_to_cart():
             WebDriverWait(browser, delay).until(
                 EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".fancybox-outer h1"), "Resource Limit Is Reached"))
             print("Demo server is out of memory")
-            
+
         time.sleep(0.3)
-        print(f'add {idx + 1} to cart')
+        print(f'add {product_name} to cart');
     quantity = browser.find_element(
         by=By.CSS_SELECTOR, value=".shopping_cart .ajax_cart_quantity")
-    print(f'product add to cart:{quantity.text}')
+    print(f'product added to cart:{quantity.text}')
 
 
 # def wait_for_product_popup_appear():
@@ -88,11 +91,15 @@ def remove_product_from_cart():
         EC.presence_of_element_located((By.CSS_SELECTOR, ".cart_delete > div > a")))
     WebDriverWait(browser, delay).until(
         EC.element_to_be_clickable((By.CSS_SELECTOR, ".cart_delete > div > a")))
-    remove_product_buttons = browser.find_elements(
+    WebDriverWait(browser, delay).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, "table#cart_summary")))
+    list_products = browser.find_elements(By.CSS_SELECTOR, "table#cart_summary > tbody > tr")
+    for idx, row_product in enumerate(list_products):
+        product_name = row_product.find_element(By.CSS_SELECTOR, ".cart_description > p.product-name > a").text
+        remove_product_button = row_product.find_element(
         by=By.CSS_SELECTOR, value=".cart_delete > div > a")
-    for idx, button in enumerate(remove_product_buttons):
-        button.click()
-        print(f"remove {idx + 1} product from cart")
+        remove_product_button.click()
+        print(f"remove {product_name} from cart")
 
     WebDriverWait(browser, delay * 3).until(
         EC.invisibility_of_element_located((By.CSS_SELECTOR, "#order-detail-content")))
@@ -102,7 +109,6 @@ def remove_product_from_cart():
 
 # .clearfix .button-container a.button
 # "#homefeatured li .button-container a.ajax_add_to_cart_button"
-
 
 browser.get('http://automationpractice.com/')
 login('compimprove@gmail.com', '0987654321')
