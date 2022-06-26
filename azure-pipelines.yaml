@@ -146,7 +146,7 @@ stages:
               appType: webApp
               package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
 
-  - job: JMeter Testing  
+  - job: JMeterTesting  
     dependsOn: DeployFakeRestAPI
     condition: succeeded()
     steps:
