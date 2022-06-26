@@ -83,24 +83,6 @@ stages:
       workingDirectory: '$(projectRoot)/terraform/main/test'
       displayName: Export Vm public ip
       name: VmPublicIp
-
-  - deployment: FakeRestAPI
-    dependsOn: BuildTerraform
-    condition: succeeded()
-    pool:
-      vmImage: $(vmImageName)
-    environment: $(environmentName)
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: AzureWebApp@1
-            displayName: 'Deploy Azure Web App'
-            inputs:
-              azureSubscription: $(azureServiceConnectionId)
-              appName: $(fakeAppName)
-              appType: webApp
-              package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
   
   - job: SeleniumTesting
     dependsOn: BuildTerraform
@@ -146,6 +128,48 @@ stages:
     #   workingDirectory: '$(projectRoot)/terraform/main/test'
     #   displayName: Destroy Terraform
 
-  # - job: JMeter Testing  
-  #   steps:
-      # 
+  - deployment: DeployFakeRestAPI
+    dependsOn: BuildTerraform
+    condition: succeeded()
+    pool:
+      vmImage: $(vmImageName)
+    environment: $(environmentName)
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureWebApp@1
+            displayName: 'Deploy Azure Web App'
+            inputs:
+              azureSubscription: $(azureServiceConnectionId)
+              appName: $(fakeAppName)
+              appType: webApp
+              package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
+
+  - job: JMeter Testing  
+    dependsOn: DeployFakeRestAPI
+    condition: succeeded()
+    steps:
+    - script: |
+        curl -X GET --header 'Accept: application/json' 'http://dinhnt-appservice.azurewebsites.net/api/Activities'
+      workingDirectory: $(projectRoot)
+      displayName: Test the url endpoint
+    - script: |
+        sudo apt install openjdk-11-jdk
+        wget https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-5.5.zip
+        unzip apache-jmeter-5.5.zip
+      workingDirectory: $(projectRoot)/automatedtesting/jmeter
+      displayName: Install Jmeter and dependencies
+    - script: |
+        wget https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-5.5.zip
+        unzip apache-jmeter-5.5.zip
+      workingDirectory: $(projectRoot)/automatedtesting/jmeter/apache-jmeter-5.5/bin
+      displayName: Download Jmeter
+    - script: |
+        ../apache-jmeter-5.5/bin/jmeter -n -t ../Starter.jmx -l log.jtl -j jmeter.log -e -o report
+      workingDirectory: $(projectRoot)/automatedtesting/jmeter/test-result
+      displayName: Run Jmeter
+
+     
+
+      

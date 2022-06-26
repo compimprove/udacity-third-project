@@ -13,7 +13,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Successful response\", function () {",
+							"pm.test(\"Successful Get All Activities\", function () {",
 							"    pm.response.to.have.status(200);",
 							"    let element = pm.response.json()[0];",
 							"    pm.expect(element).to.be.an(\"object\");",
@@ -54,7 +54,7 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Successful response\", function () {",
+							"pm.test(\"Successful Get Activity By ID\", function () {",
 							"    pm.response.to.have.status(200);",
 							"    let element = pm.response.json();",
 							"    pm.expect(element).to.be.an(\"object\");",
@@ -88,13 +88,13 @@
 			"response": []
 		},
 		{
-			"name": "Create Activities",
+			"name": "Create Activity",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Successful response\", function () {",
+							"pm.test(\"Successful Create Activity\", function () {",
 							"    pm.response.to.have.status(200);",
 							"    let object = pm.response.json();",
 							"    pm.expect(object.id).to.eql(3);",
@@ -130,6 +130,100 @@
 						"api",
 						"v1",
 						"Activities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Activity",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful Edit Activity\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    let object = pm.response.json();",
+							"    pm.expect(object.id).to.eql(3);",
+							"    pm.expect(object.title).to.eql(\"Boxing\");",
+							"    pm.expect(object.dueDate).to.eql(\"2022-06-20T00:00:00\");",
+							"    pm.expect(object.completed).to.eql(true);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": 3,\n  \"title\": \"Boxing\",\n  \"dueDate\": \"2022-06-20\",\n  \"completed\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://fakerestapi.azurewebsites.net/api/v1/Activities",
+					"protocol": "http",
+					"host": [
+						"fakerestapi",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Activities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Activity",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful Delete Activity\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://fakerestapi.azurewebsites.net/api/v1/Activities/2",
+					"protocol": "http",
+					"host": [
+						"fakerestapi",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Activities",
+						"2"
 					]
 				}
 			},
