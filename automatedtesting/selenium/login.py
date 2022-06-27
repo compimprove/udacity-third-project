@@ -57,7 +57,8 @@ def add_product_to_cart():
     list_products = browser.find_elements(
         by=By.CSS_SELECTOR, value="#homefeatured li")
     for idx, product in enumerate(list_products):
-        product_name = product.find_element(By.CSS_SELECTOR, ".product-name").text
+        product_name = product.find_element(
+            By.CSS_SELECTOR, ".product-name").text
         button = product.find_element(
             By.CSS_SELECTOR, ".button-container a.ajax_add_to_cart_button")
         button.click()
@@ -73,7 +74,7 @@ def add_product_to_cart():
             print("Demo server is out of memory")
 
         time.sleep(0.3)
-        print(f'add {product_name} to cart');
+        print(f'add {product_name} to cart')
     quantity = browser.find_element(
         by=By.CSS_SELECTOR, value=".shopping_cart .ajax_cart_quantity")
     print(f'product added to cart:{quantity.text}')
@@ -93,12 +94,16 @@ def remove_product_from_cart():
         EC.element_to_be_clickable((By.CSS_SELECTOR, ".cart_delete > div > a")))
     WebDriverWait(browser, delay).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, "table#cart_summary")))
-    list_products = browser.find_elements(By.CSS_SELECTOR, "table#cart_summary > tbody > tr")
+    list_products = browser.find_elements(
+        By.CSS_SELECTOR, "table#cart_summary > tbody > tr")
     for idx, row_product in enumerate(list_products):
-        product_name = row_product.find_element(By.CSS_SELECTOR, ".cart_description > p.product-name > a").text
-        remove_product_button = row_product.find_element(
-        by=By.CSS_SELECTOR, value=".cart_delete > div > a")
-        remove_product_button.click()
+        WebDriverWait(row_product, delay).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, ".cart_description > p.product-name > a")))
+        product_name = row_product.find_element(
+            By.CSS_SELECTOR, ".cart_description > p.product-name > a").text
+
+        WebDriverWait(row_product, delay).until(
+                EC.element_to_be_clickable((By.CSS_SELECTOR, ".cart_delete > div > a"))).click()
         print(f"remove {product_name} from cart")
 
     WebDriverWait(browser, delay * 3).until(
