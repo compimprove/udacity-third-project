@@ -11,6 +11,11 @@ resource "azurerm_network_interface" "main" {
   }
 }
 
+data "azurerm_log_analytics_workspace" "main" {
+  resource_group_name = var.resource_group_name
+  name = "loganalytics-199675"
+}
+
 resource "azurerm_linux_virtual_machine" "main" {
   name                = "${var.application_type}-${var.resource_type}"
   location            = var.location
@@ -31,5 +36,15 @@ resource "azurerm_linux_virtual_machine" "main" {
     offer     = "UbuntuServer"
     sku       = "18.04-LTS"
     version   = "latest"
+  }
+}
+
+resource "azurerm_monitor_diagnostic_setting" "main" {
+  name               = "${var.application_type}-${var.resource_type}-diagnostic"
+  target_resource_id = azurerm_linux_virtual_machine.main.id
+  log_analytics_workspace_id = data.azurerm_log_analytics_workspace.main.id
+
+  metric {
+    category = "AllMetrics"
   }
 }

@@ -96,6 +96,7 @@ def remove_product_from_cart():
         EC.presence_of_element_located((By.CSS_SELECTOR, "table#cart_summary")))
     list_products = browser.find_elements(
         By.CSS_SELECTOR, "table#cart_summary > tbody > tr")
+    time.sleep(0.3)
     for idx, row_product in enumerate(list_products):
         WebDriverWait(row_product, delay).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, ".cart_description > p.product-name > a")))
@@ -103,7 +104,10 @@ def remove_product_from_cart():
             By.CSS_SELECTOR, ".cart_description > p.product-name > a").text
 
         WebDriverWait(row_product, delay).until(
-                EC.element_to_be_clickable((By.CSS_SELECTOR, ".cart_delete > div > a"))).click()
+            EC.element_to_be_clickable((By.CSS_SELECTOR, ".cart_delete > div > a")))
+        time.sleep(0.1)
+        row_product.find_element(
+            By.CSS_SELECTOR, ".cart_delete > div > a").click()
         print(f"remove {product_name} from cart")
 
     WebDriverWait(browser, delay * 3).until(
@@ -114,6 +118,7 @@ def remove_product_from_cart():
 
 # .clearfix .button-container a.button
 # "#homefeatured li .button-container a.ajax_add_to_cart_button"
+
 
 browser.get('http://automationpractice.com/')
 login('compimprove@gmail.com', '0987654321')
