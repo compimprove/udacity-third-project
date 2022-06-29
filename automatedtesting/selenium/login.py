@@ -6,6 +6,17 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
+import logging
+
+#Creating and Configuring Logger
+
+Log_Format = "%(asctime)s - %(message)s"
+logging.basicConfig(filename = "logfile.log",
+                    filemode = "w",
+                    format = Log_Format, 
+                    level = logging.INFO)
+
+logger = logging.getLogger()
 
 # --uncomment when running in Azure DevOps.
 options = ChromeOptions()
@@ -16,42 +27,42 @@ options.add_argument("--headless")
 
 delay = 30
 browser = webdriver.Chrome(options=options)
-print('Starting the browser...')
+logger.info('Starting the browser...')
 # Start the browser and login with standard_user
 
 
 def login(email, password):
     browser.find_element(by=By.CSS_SELECTOR,
                          value="a.login").click()
-    print('Navigating to login.')
+    logger.info('Navigating to login.')
     try:
         email_input = WebDriverWait(browser, delay).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, "#email")))
         email_input.send_keys(email)
-        print('set email: ', email)
+        logger.info('set email: ' + email)
         browser.find_element(by=By.CSS_SELECTOR,
                              value="#passwd").send_keys(password)
-        print('set password: ', password)
+        logger.info('set password: ' + password)
         browser.find_element(by=By.CSS_SELECTOR,
                              value="#SubmitLogin").click()
-        print('Login successfully with username:',
-              email, 'password:', password)
+        logger.info('Login successfully with username:' +
+              email + 'password:' + password)
     except TimeoutException:
-        print("Loading took too much time!")
+        logger.info("Loading took too much time!")
 
 
 def go_to_home():
-    print('goToHome')
+    logger.info('goToHome')
     try:
         home = WebDriverWait(browser, delay).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, "#header_logo>a")))
         home.click()
     except TimeoutException:
-        print("Loading took too much time!")
+        logger.info("Loading took too much time!")
 
 
 def add_product_to_cart():
-    print('addProductToCart')
+    logger.info('addProductToCart')
     WebDriverWait(browser, delay).until(
         EC.presence_of_element_located((By.CSS_SELECTOR, "#homefeatured li .button-container a.ajax_add_to_cart_button")))
     list_products = browser.find_elements(
@@ -71,13 +82,13 @@ def add_product_to_cart():
         except TimeoutException:
             WebDriverWait(browser, delay).until(
                 EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".fancybox-outer h1"), "Resource Limit Is Reached"))
-            print("Demo server is out of memory")
+            logger.info("Demo server is out of memory")
 
         time.sleep(0.3)
-        print(f'add {product_name} to cart')
+        logger.info(f'add {product_name} to cart')
     quantity = browser.find_element(
         by=By.CSS_SELECTOR, value=".shopping_cart .ajax_cart_quantity")
-    print(f'product added to cart:{quantity.text}')
+    logger.info(f'product added to cart:{quantity.text}')
 
 
 # def wait_for_product_popup_appear():
@@ -108,13 +119,13 @@ def remove_product_from_cart():
         time.sleep(0.1)
         row_product.find_element(
             By.CSS_SELECTOR, ".cart_delete > div > a").click()
-        print(f"remove {product_name} from cart")
+        logger.info(f"remove {product_name} from cart")
 
     WebDriverWait(browser, delay * 3).until(
         EC.invisibility_of_element_located((By.CSS_SELECTOR, "#order-detail-content")))
     WebDriverWait(browser, delay).until(
         EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#center_column .alert.alert-warning"), "Your shopping cart is empty."))
-    print(f"Remove all product from cart successfully")
+    logger.info(f"Remove all product from cart successfully")
 
 # .clearfix .button-container a.button
 # "#homefeatured li .button-container a.ajax_add_to_cart_button"
