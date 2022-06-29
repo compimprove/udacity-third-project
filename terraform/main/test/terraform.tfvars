@@ -1,5 +1,6 @@
 # Azure subscription vars
 
+
 # Resource Group/Location
 location = "East Asia"
 resource_group = "Azuredevops"

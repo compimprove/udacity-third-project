@@ -10,7 +10,7 @@ terraform {
     storage_account_name = "dinhntterraform"
     container_name       = "terraformcontainer"
     key                  = "dinhntterraform.key"
-    access_key           = "NpAeX9IQdapcItPQrRbnxM7n1lBkSZDJ1Fw/i8WKkHRKeJ/x5tnElpZB9TQmfiw7zeZ3kgFhYWlo+AStefHafA=="
+    access_key           = "qgj0nLg5HQBH3mEf6zlLItsDubEU/qE66ba9l6kXkJjizC5CNVNLB4YwZRM2pDm4nQV/USu5/d1n+AStwCvfmw=="
   }
 }
 module "resource_group" {
