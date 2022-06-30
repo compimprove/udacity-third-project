@@ -31,12 +31,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://fakerestapi.azurewebsites.net/api/v1/Activities",
-					"protocol": "http",
+					"raw": "{{host-url}}/api/v1/Activities",
 					"host": [
-						"fakerestapi",
-						"azurewebsites",
-						"net"
+						"{{host-url}}"
 					],
 					"path": [
 						"api",
@@ -70,12 +67,9 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://fakerestapi.azurewebsites.net/api/v1/Activities/{{activity-id}}",
-					"protocol": "http",
+					"raw": "{{host-url}}/api/v1/Activities/{{activity-id}}",
 					"host": [
-						"fakerestapi",
-						"azurewebsites",
-						"net"
+						"{{host-url}}"
 					],
 					"path": [
 						"api",
@@ -119,12 +113,9 @@
 					}
 				},
 				"url": {
-					"raw": "http://fakerestapi.azurewebsites.net/api/v1/Activities",
-					"protocol": "http",
+					"raw": "{{host-url}}/api/v1/Activities",
 					"host": [
-						"fakerestapi",
-						"azurewebsites",
-						"net"
+						"{{host-url}}"
 					],
 					"path": [
 						"api",
@@ -168,12 +159,9 @@
 					}
 				},
 				"url": {
-					"raw": "http://fakerestapi.azurewebsites.net/api/v1/Activities",
-					"protocol": "http",
+					"raw": "{{host-url}}/api/v1/Activities",
 					"host": [
-						"fakerestapi",
-						"azurewebsites",
-						"net"
+						"{{host-url}}"
 					],
 					"path": [
 						"api",
@@ -212,12 +200,9 @@
 					}
 				},
 				"url": {
-					"raw": "http://fakerestapi.azurewebsites.net/api/v1/Activities/2",
-					"protocol": "http",
+					"raw": "{{host-url}}/api/v1/Activities/2",
 					"host": [
-						"fakerestapi",
-						"azurewebsites",
-						"net"
+						"{{host-url}}"
 					],
 					"path": [
 						"api",
