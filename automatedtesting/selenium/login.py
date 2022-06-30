@@ -17,6 +17,9 @@ logging.basicConfig(filename="logfile.log",
                     level=logging.INFO)
 
 logger = logging.getLogger()
+def log(string):
+    print(string)
+    logger.info(string);
 
 # --uncomment when running in Azure DevOps.
 options = ChromeOptions()
@@ -25,9 +28,12 @@ options.add_argument("--headless")
 # userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36"
 # options.add_argument('user-agent={userAgent}')
 
-delay = 60
+delay = 30
 browser = webdriver.Chrome(options=options)
-logger.info('Starting the browser...')
+log('Starting the browser...')
+
+
+
 # Start the browser and login with standard_user
 
 
@@ -36,34 +42,34 @@ def login(email, password):
         loginButton = WebDriverWait(browser, delay).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, "a.login")))
         loginButton.click()
-        logger.info('Navigating to login.')
+        log('Navigating to login.')
         email_input = WebDriverWait(browser, delay).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, "#email")))
         email_input.send_keys(email)
-        logger.info('set email: ' + email)
+        log('set email: ' + email)
         browser.find_element(by=By.CSS_SELECTOR,
                              value="#passwd").send_keys(password)
-        logger.info('set password: ' + password)
+        log('set password: ' + password)
         browser.find_element(by=By.CSS_SELECTOR,
                              value="#SubmitLogin").click()
-        logger.info('Login successfully with username:' +
-                    email + 'password:' + password)
+        log('Login successfully with username: ' +
+                    email + ',password: ' + password)
     except TimeoutException:
-        logger.info("Loading took too much time in login!")
+        log("Loading took too much time in login!")
 
 
 def go_to_home():
-    logger.info('goToHome')
+    log('goToHome')
     try:
         home = WebDriverWait(browser, delay).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, "#header_logo>a")))
         home.click()
     except TimeoutException:
-        logger.info("Loading took too much time in go home!")
+        log("Loading took too much time in go home!")
 
 
 def add_product_to_cart():
-    logger.info('addProductToCart')
+    log('addProductToCart')
     try:
         WebDriverWait(browser, delay).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, "#homefeatured li .button-container a.ajax_add_to_cart_button")))
@@ -88,15 +94,15 @@ def add_product_to_cart():
             except TimeoutException:
                 WebDriverWait(browser, delay).until(
                     EC.text_to_be_present_in_element((By.CSS_SELECTOR, ".fancybox-outer h1"), "Resource Limit Is Reached"))
-                logger.info("Demo server is out of memory")
+                log("Demo server is out of memory")
 
             time.sleep(0.3)
-            logger.info(f'add {product_name} to cart')
+            log(f'add {product_name} to cart')
         quantity = browser.find_element(
             by=By.CSS_SELECTOR, value=".shopping_cart .ajax_cart_quantity")
-        logger.info(f'product added to cart:{quantity.text}')
+        log(f'product added to cart: {quantity.text}')
     except TimeoutException:
-        logger.info("Loading took too much time when add product to cart!")
+        log("Loading took too much time when add product to cart!")
 
 # def wait_for_product_popup_appear():
 #     while (browser.find_element(by=By.ID, value="layer_cart").value_of_css_property('display') == 'none'):
@@ -127,20 +133,30 @@ def remove_product_from_cart():
             time.sleep(0.3)
             row_product.find_element(
                 By.CSS_SELECTOR, ".cart_delete > div > a").click()
-            logger.info(f"remove {product_name} from cart")
+            log(f"remove {product_name} from cart")
 
         WebDriverWait(browser, delay * 3).until(
             EC.invisibility_of_element_located((By.CSS_SELECTOR, "#order-detail-content")))
         WebDriverWait(browser, delay).until(
             EC.text_to_be_present_in_element((By.CSS_SELECTOR, "#center_column .alert.alert-warning"), "Your shopping cart is empty."))
-        logger.info(f"Remove all product from cart successfully")
+        log(f"Remove all product from cart successfully")
     except TimeoutException:
-        logger.info("Loading took too much time when remove product from cart!")
+        log("Loading took too much time when remove product from cart!")
 # .clearfix .button-container a.button
 # "#homefeatured li .button-container a.ajax_add_to_cart_button"
 
+tryTime = 1;
 
 browser.get('http://automationpractice.com/')
+while tryTime <= 5:
+    if (browser.find_element(By.CSS_SELECTOR, "h1").text.lower() == "resource limit is reached"):
+        tryTime += 1
+        browser.get('http://automationpractice.com/')
+        log(f"Domain resource is reached, try {tryTime} time")
+        time.sleep(1)
+        continue
+    else:
+        break
 login('compimprove@gmail.com', '0987654321')
 go_to_home()
 add_product_to_cart()

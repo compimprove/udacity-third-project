@@ -138,7 +138,7 @@ stages:
     - script: | 
         ssh -o StrictHostKeyChecking=no adminuser@$(vm_public_ip) "mkdir ~/selenium-testing"
         scp login.py adminuser@$(vm_public_ip):~/selenium-testing/login.py
-        ssh -o StrictHostKeyChecking=no adminuser@$(vm_public_ip) "python3 ~/selenium-testing/login.py; cat ~/logfile.log; sudo cp ~/logfile.log /var/log/logfile.log"
+        ssh -o StrictHostKeyChecking=no adminuser@$(vm_public_ip) "python3 ~/selenium-testing/login.py; sudo cp ~/logfile.log /var/log/logfile.log"
       workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
       displayName: Selenium Testing
 
