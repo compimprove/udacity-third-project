@@ -77,7 +77,7 @@ def add_product_to_cart():
             by=By.CSS_SELECTOR, value="#homefeatured li")
         for idx, product in enumerate(list_products):
             WebDriverWait(product, delay).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, ".button-container a.ajax_add_to_cart_button")))
+                EC.element_to_be_clickable(mark)((By.CSS_SELECTOR, ".button-container a.ajax_add_to_cart_button")))
             WebDriverWait(product, delay).until(
                 EC.presence_of_element_located((By.CSS_SELECTOR, ".product-name")))
             product_name = product.find_element(
@@ -129,10 +129,7 @@ def remove_product_from_cart():
                 By.CSS_SELECTOR, ".cart_description > p.product-name > a").text
 
             WebDriverWait(row_product, delay).until(
-                EC.element_to_be_clickable((By.CSS_SELECTOR, ".cart_delete > div > a")))
-            time.sleep(0.3)
-            row_product.find_element(
-                By.CSS_SELECTOR, ".cart_delete > div > a").click()
+                EC.element_to_be_clickable((By.CSS_SELECTOR, ".cart_delete > div > a"))).click()
             log(f"remove {product_name} from cart")
 
         WebDriverWait(browser, delay * 3).until(
