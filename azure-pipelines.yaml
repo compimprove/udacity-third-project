@@ -1,6 +1,6 @@
 name: Azure Pipelines
 variables:
-  azureServiceConnectionId: 'udacityThirdProjectServiceConnection'
+  azureServiceConnectionId: 'udacityLabServiceConnectionPrivate'
 
   vmImageName: 'ubuntu-18.04'
 
