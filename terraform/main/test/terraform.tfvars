@@ -3,7 +3,7 @@
 
 # Resource Group/Location
 location = "East Asia"
-resource_group = "Azuredevops"
+resource_group = "Azuredevops2"
 application_type = "dinhnt"
 
 # Network
