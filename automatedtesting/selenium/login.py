@@ -147,12 +147,13 @@ def remove_product_from_cart():
 tryTime = 1;
 
 browser.get('http://automationpractice.com/')
-while tryTime <= 5:
+time.sleep(2)
+while tryTime <= 10:
     if (browser.find_element(By.CSS_SELECTOR, "h1").text.lower() == "resource limit is reached"):
         tryTime += 1
         browser.get('http://automationpractice.com/')
         log(f"Domain resource is reached, try {tryTime} time")
-        time.sleep(1)
+        time.sleep(5)
         continue
     else:
         break
