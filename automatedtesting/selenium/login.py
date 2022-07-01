@@ -145,10 +145,10 @@ def remove_product_from_cart():
 # "#homefeatured li .button-container a.ajax_add_to_cart_button"
 
 tryTime = 1;
-
+totalTry = 10
 browser.get('http://automationpractice.com/')
 time.sleep(2)
-while tryTime <= 10:
+while tryTime <= totalTry:
     if (browser.find_element(By.CSS_SELECTOR, "h1").text.lower() == "resource limit is reached"):
         tryTime += 1
         browser.get('http://automationpractice.com/')
@@ -157,9 +157,14 @@ while tryTime <= 10:
         continue
     else:
         break
-login('compimprove@gmail.com', '0987654321')
-go_to_home()
-add_product_to_cart()
-remove_product_from_cart()
+
+if (tryTime <= totalTry):
+    login('compimprove@gmail.com', '0987654321')
+    go_to_home()
+    add_product_to_cart()
+    remove_product_from_cart()
+else:
+    log(f"Can't test now, domain are dead")
+    exit(1)
 
 # wait for this to go <div class="fancybox-overlay fancybox-overlay-fixed" style="display: block; width: auto; height: auto;"></div>
