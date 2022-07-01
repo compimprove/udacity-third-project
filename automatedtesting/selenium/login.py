@@ -1,5 +1,6 @@
 # #!/usr/bin/env python
 import time
+import syslog
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.common.by import By
@@ -18,6 +19,7 @@ logging.basicConfig(filename="logfile.log",
 
 logger = logging.getLogger()
 def log(string):
+    syslog.syslog(syslog.LOG_INFO, string);
     print(string)
     logger.info(string);
 
@@ -158,3 +160,5 @@ login('compimprove@gmail.com', '0987654321')
 go_to_home()
 add_product_to_cart()
 remove_product_from_cart()
+
+# wait for this to go <div class="fancybox-overlay fancybox-overlay-fixed" style="display: block; width: auto; height: auto;"></div>
