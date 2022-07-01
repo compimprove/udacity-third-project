@@ -12,7 +12,7 @@ import logging
 # Creating and Configuring Logger
 
 Log_Format = "%(asctime)s - %(message)s"
-logging.basicConfig(filename="logfile.log",
+logging.basicConfig(filename="seleniumTest",
                     filemode="w",
                     format=Log_Format,
                     level=logging.INFO)
