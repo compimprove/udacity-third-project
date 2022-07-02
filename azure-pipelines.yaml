@@ -1,5 +1,4 @@
 name: Azure Pipelines
-trigger: main
 schedules:
 - cron: "0 * * * *"
   displayName: Hourly trigger
