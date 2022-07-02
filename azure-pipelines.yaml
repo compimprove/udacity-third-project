@@ -1,5 +1,11 @@
 name: Azure Pipelines
-trigger: none
+trigger: main
+schedules:
+- cron: "0 * * * *"
+  displayName: Hourly trigger
+  branches:
+    include:
+    - main
 variables:
   azureServiceConnectionId: 'udacityLabServiceConnectionPrivate'
 
@@ -166,6 +172,7 @@ stages:
       displayName: Download Jmeter
     - script: |
         ../apache-jmeter-5.5/bin/jmeter -n -t ../stress-test.jmx -l log.jtl -j jmeter.log -e -o stress-test-report
+        rm -f jmeter.log log.jtl
         ../apache-jmeter-5.5/bin/jmeter -n -t ../endurance-test.jmx -l log.jtl -j jmeter.log -e -o endurance-test-report
       workingDirectory: $(projectRoot)/automatedtesting/jmeter/test-result
       displayName: Run Jmeter
