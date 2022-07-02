@@ -1,10 +1,5 @@
 name: Azure Pipelines
-schedules:
-- cron: "0 * * * *"
-  displayName: Hourly trigger
-  branches:
-    include:
-    - main
+
 variables:
   azureServiceConnectionId: 'udacityLabServiceConnectionPrivate'
 
