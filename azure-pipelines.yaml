@@ -26,7 +26,8 @@ stages:
       displayName: Install Newman
 
     - script: | 
-        newman run -e Testing_Env.json -r junit StarterAPIs.json 
+        newman run -e Testing_Env.json -r junit regression-test.postman_collection.json
+        newman run -e Testing_Env.json -r junit data-validation-test.postman_collection.json
       workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
       displayName: Run Test Newman
 
@@ -164,7 +165,8 @@ stages:
       workingDirectory: $(projectRoot)/automatedtesting/jmeter/apache-jmeter-5.5/bin
       displayName: Download Jmeter
     - script: |
-        ../apache-jmeter-5.5/bin/jmeter -n -t ../Starter.jmx -l log.jtl -j jmeter.log -e -o report
+        ../apache-jmeter-5.5/bin/jmeter -n -t ../stress-test.jmx -l log.jtl -j jmeter.log -e -o stress-test-report
+        ../apache-jmeter-5.5/bin/jmeter -n -t ../endurance-test.jmx -l log.jtl -j jmeter.log -e -o endurance-test-report
       workingDirectory: $(projectRoot)/automatedtesting/jmeter/test-result
       displayName: Run Jmeter
 
