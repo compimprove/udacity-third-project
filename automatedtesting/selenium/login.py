@@ -1,10 +1,19 @@
 import time
 import syslog
+import logging
+Log_Format = "%(asctime)s - %(message)s"
+logging.basicConfig(filename="seleniumTest",
+                    filemode="w",
+                    format=Log_Format,
+                    level=logging.INFO)
+
+logger = logging.getLogger()
 
 def log(string):
     syslog.syslog(syslog.LOG_INFO, string);
     print(string)
-
+    logger.info(string);
+    
 time.sleep(1)
 log("Starting the browser...")
 time.sleep(8)
