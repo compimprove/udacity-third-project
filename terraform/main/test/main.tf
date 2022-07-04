@@ -17,6 +17,12 @@ module "resource_group" {
   source         = "../../modules/resource_group"
   resource_group = var.resource_group
 }
+
+module "log_analytics_workspace" {
+  source              = "../../modules/log_analytics_workspace"
+  resource_group_name = module.resource_group.resource_group_name
+}
+
 module "network" {
   source               = "../../modules/network"
   address_space        = var.address_space
@@ -38,11 +44,12 @@ module "nsg-test" {
   address_prefix_test = var.address_prefix_test
 }
 module "appservice" {
-  source           = "../../modules/appservice"
-  location         = var.location
-  application_type = var.application_type
-  resource_type    = "AppService"
-  resource_group   = module.resource_group.resource_group_name
+  source            = "../../modules/appservice"
+  location          = var.location
+  application_type  = var.application_type
+  resource_type     = "AppService"
+  resource_group    = module.resource_group.resource_group_name
+  resource_group_id = module.resource_group.resource_group_id
 }
 module "publicip" {
   source           = "../../modules/publicip"
@@ -53,11 +60,13 @@ module "publicip" {
 }
 
 module "vm" {
-  source               = "../../modules/vm"
-  location             = var.location
-  application_type     = var.application_type
-  resource_type        = "vm"
-  resource_group_name  = module.resource_group.resource_group_name
-  public_ip_address_id = module.publicip.public_ip_address_id
-  subnet_id            = module.network.subnet_id_main
+  source                           = "../../modules/vm"
+  location                         = var.location
+  application_type                 = var.application_type
+  resource_type                    = "vm"
+  resource_group_name              = module.resource_group.resource_group_name
+  public_ip_address_id             = module.publicip.public_ip_address_id
+  subnet_id                        = module.network.subnet_id_main
+  log_analytics_workspace_id       = module.log_analytics_workspace.log_analytics_workspace_id
+  log_analytics_primary_shared_key = module.log_analytics_workspace.log_analytics_primary_shared_key
 }
