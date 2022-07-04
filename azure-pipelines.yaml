@@ -1,5 +1,3 @@
-name: Azure Pipelines
-
 variables:
   azureServiceConnectionId: 'udacityLabServiceConnectionPrivate'
 
