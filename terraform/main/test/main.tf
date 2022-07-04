@@ -20,6 +20,7 @@ module "resource_group" {
 
 module "log_analytics_workspace" {
   source              = "../../modules/log_analytics_workspace"
+  location = var.location
   resource_group_name = module.resource_group.resource_group_name
 }
 
