@@ -24,10 +24,14 @@ stages:
       displayName: Install Newman
 
     - script: | 
-        newman run -e Testing_Env.json -r junit regression-test.postman_collection.json
-        newman run -e Testing_Env.json -r junit data-validation-test.postman_collection.json
+        newman run -e Testing_Env.json -r junit,cli regression-test.postman_collection.json
       workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
-      displayName: Run Test Newman
+      displayName: Regression Test
+
+    - script: | 
+        newman run -e Testing_Env.json -r junit,cli data-validation-test.postman_collection.json
+      workingDirectory: '$(System.DefaultWorkingDirectory)/automatedtesting/postman'
+      displayName: Data Validation Test
 
     - task: PublishTestResults@2
       inputs:
@@ -167,8 +171,8 @@ stages:
         rm -f jmeter.log log.jtl
         ../apache-jmeter-5.5/bin/jmeter -n -t ../endurance-test.jmx -l log.jtl -j jmeter.log -e -o endurance-test-report
       workingDirectory: $(projectRoot)/automatedtesting/jmeter/test-result
-      displayName: Run Jmeter
-
-     
-
-      
+      displayName: Stress Test
+    - script: |
+        ../apache-jmeter-5.5/bin/jmeter -n -t ../endurance-test.jmx -l log.jtl -j jmeter.log -e -o endurance-test-report
+      workingDirectory: $(projectRoot)/automatedtesting/jmeter/test-result
+      displayName: Endurance Test
