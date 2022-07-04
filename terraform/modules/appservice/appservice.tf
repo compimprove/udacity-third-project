@@ -32,19 +32,21 @@ resource "azurerm_monitor_action_group" "main" {
 }
 
 resource "azurerm_monitor_metric_alert" "main" {
-  name                = "HTTP 2xx More Than 50"
-  resource_group_name = var.resource_group
-  description         = "Action will be triggered when HTTP 2xx count is greater than 50."
-  scopes              = [azurerm_app_service.main.id]
-  enabled             = true
-  severity            = 2
-
+  name                 = "HTTP 2xx More Than 50"
+  resource_group_name  = var.resource_group
+  description          = "Action will be triggered when HTTP 2xx count is greater than 50."
+  scopes               = [azurerm_app_service.main.id]
+  enabled              = true
+  severity             = 2
+  target_resource_type = ""
   criteria {
-    metric_namespace = "Microsoft.Web/sites"
-    metric_name      = "Http2xx"
-    aggregation      = "Total"
-    operator         = "GreaterThan"
-    threshold        = 50
+    metric_namespace       = "Microsoft.Web/sites"
+    metric_name            = "Http2xx"
+    aggregation            = "Total"
+    operator               = "GreaterThan"
+    threshold              = 50
+    skip_metric_validation = false
+    
   }
 
   action {
