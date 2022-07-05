@@ -1,0 +1,122 @@
+[
+  {
+    "Time": "2022-07-04T13:45:48.7085728Z",
+    "Application": "LogGenerator",
+    "RawData": "2022-06-29 21:54:10,531 - Starting the browser..."
+  },
+  {
+    "Time": "2022-07-04T13:45:48.7096159Z",
+    "Application": "LogGenerator",
+    "RawData": "2022-06-29 21:54:35,323 - Navigating to login."
+  },
+  {
+    "Time": "2022-07-04T13:45:48.7097491Z",
+    "Application": "LogGenerator",
+    "RawData": "2022-06-29 21:54:36,942 - set email: compimprove@gmail.com"
+  },
+  {
+    "Time": "2022-07-04T13:45:48.7098024Z",
+    "Application": "LogGenerator",
+    "RawData": "2022-06-29 21:54:37,006 - set password: 0987654321"
+  },
+  {
+    "Time": "2022-07-04T13:45:48.7098668Z",
+    "Application": "LogGenerator",
+    "RawData": "2022-06-29 21:54:45,217 - Login successfully with username:compimprove@gmail.compassword:0987654321"
+  },
+  {
+    "Time": "2022-07-04T13:45:48.7099170Z",
+    "Application": "LogGenerator",
+    "RawData": "2022-06-29 21:54:45,217 - goToHome"
+  },
+  {
+    "Time": "2022-07-04T13:45:48.7099776Z",
+    "Application": "LogGenerator",
+    "RawData": "2022-06-29 21:54:58,547 - addProductToCart"
+  },
+  {
+    "Time": "2022-07-04T13:45:48.7100394Z",
+    "Application": "LogGenerator",
+    "RawData": "2022-06-29 21:55:07,659 - add Faded Short Sleeve T-shirts to cart"
+  },
+  {
+    "Time": "2022-07-04T13:45:48.7100854Z",
+    "Application": "LogGenerator",
+    "RawData": "2022-06-29 21:55:17,771 - add Blouse to cart"
+  },
+  {
+    "Time": "2022-07-04T13:45:48.7101339Z",
+    "Application": "LogGenerator",
+    "RawData": "2022-06-29 21:55:19,541 - add Printed Dress to cart"
+  },
+  {
+    "Time": "2022-07-04T13:45:48.7101802Z",
+    "Application": "LogGenerator",
+    "RawData": "2022-06-29 21:55:24,954 - add Printed Dress to cart"
+  },
+  {
+    "Time": "2022-07-04T13:45:48.7102362Z",
+    "Application": "LogGenerator",
+    "RawData": "2022-06-29 21:55:31,944 - add Printed Summer Dress to cart"
+  },
+  {
+    "Time": "2022-07-04T13:45:48.7102805Z",
+    "Application": "LogGenerator",
+    "RawData": "2022-06-29 21:55:38,900 - add Printed Summer Dress to cart"
+  },
+  {
+    "Time": "2022-07-04T13:45:48.7103315Z",
+    "Application": "LogGenerator",
+    "RawData": "2022-06-29 21:55:44,306 - add Printed Chiffon Dress to cart"
+  },
+  {
+    "Time": "2022-07-04T13:45:48.7104868Z",
+    "Application": "LogGenerator",
+    "RawData": "2022-06-29 21:55:44,331 - product added to cart:7"
+  },
+  {
+    "Time": "2022-07-04T13:45:48.7105523Z",
+    "Application": "LogGenerator",
+    "RawData": "2022-06-29 21:55:51,048 - remove Faded Short Sleeve T-shirts from cart"
+  },
+  {
+    "Time": "2022-07-04T13:45:48.7106177Z",
+    "Application": "LogGenerator",
+    "RawData": "2022-06-29 21:55:51,251 - remove Blouse from cart"
+  },
+  {
+    "Time": "2022-07-04T13:45:48.7106663Z",
+    "Application": "LogGenerator",
+    "RawData": "2022-06-29 21:55:51,454 - remove Printed Dress from cart"
+  },
+  {
+    "Time": "2022-07-04T13:45:48.7107143Z",
+    "Application": "LogGenerator",
+    "RawData": "2022-06-29 21:55:51,649 - remove Printed Dress from cart"
+  },
+  {
+    "Time": "2022-07-04T13:45:48.7107613Z",
+    "Application": "LogGenerator",
+    "RawData": "2022-06-29 21:55:51,849 - remove Printed Summer Dress from cart"
+  },
+  {
+    "Time": "2022-07-04T13:45:48.7108100Z",
+    "Application": "LogGenerator",
+    "RawData": "2022-06-29 21:55:52,055 - remove Printed Summer Dress from cart"
+  },
+  {
+    "Time": "2022-07-04T13:45:48.7108588Z",
+    "Application": "LogGenerator",
+    "RawData": "2022-06-29 21:55:52,250 - remove Printed Chiffon Dress from cart"
+  },
+  {
+    "Time": "2022-07-04T13:45:48.7109040Z",
+    "Application": "LogGenerator",
+    "RawData": "2022-06-29 21:55:52,250 - Remove all product from cart successfully"
+  },
+  {
+    "Time": "2022-07-04T13:45:48.7109512Z",
+    "Application": "LogGenerator",
+    "RawData": ""
+  }
+]
